@@ -5,20 +5,30 @@ import { PeopleService } from "../people.service";
 @Component({
   selector: 'app-people-list',
   template: `
-    <ul>
-      <li *ngFor="let person of people">
-        {{person.name}}
-      </li>
-    </ul>
+
+  <!-- this is the new syntax for ng-repeat -->
+  <ul>
+    <li *ngFor="let person of people">
+      <a href="#" (click)="selectPerson(person)">
+      {{person.name}}
+      </a>
+    </li>
+  </ul>
+  <app-person-details [person]="selectedPerson"></app-person-details>
   `,
   styleUrls: ['./people-list.component.scss']
 })
 export class PeopleListComponent implements OnInit {
+  selectedPerson: Person;
   people: Person[];
 
-  constructor(private peopleService: PeopleService) {
-    this.people = peopleService.getAll();
+  constructor(private peopleService: PeopleService) { }
+
+  ngOnInit() {
+    this.people = this.peopleService.getAll();
   }
 
-  ngOnInit() {}
+  selectPerson(person:Person){
+    this.selectedPerson = person;
+  }
 }
